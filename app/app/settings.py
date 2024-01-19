@@ -26,6 +26,7 @@ SECRET_KEY = "django-insecure-&w@k=)!fnu2djn3(%wny*3smt+h4u2@v!q$n9*hklbry(6*nq8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", False) != "False"
 PROD = not DEBUG
+IS_MONOLINGUAL = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -33,6 +34,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "modeltranslation",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -45,8 +47,7 @@ INSTALLED_APPS = [
     "contact.apps.ContactConfig",
     "product.apps.ProductConfig",
     "order.apps.OrderConfig",
-    'modeltranslation',
-    'rest_framework',
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -54,15 +55,15 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    'utils.current_request.RequestMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
+    "utils.current_request.RequestMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = "app.urls"
-AUTH_USER_MODEL = 'account.Account'
+AUTH_USER_MODEL = "account.Account"
 
 TEMPLATES = [
     {
@@ -128,14 +129,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGES = (
-    ('en', 'English'),
-    ('az', 'Azerbaijan'),
-    ('ru', 'Russian'),
+    ("en", "English"),
+    ("az", "Azerbaijan"),
+    ("ru", "Russian"),
 )
 
-LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale/'),
-    )
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale/"),)
 
 # MODELTRANSLATION_DEFAULT_LANGUAGE = 'az'
 MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
@@ -167,6 +166,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
-LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+LOGIN_URL = "/login"

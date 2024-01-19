@@ -1,11 +1,15 @@
 from django.shortcuts import render
-from order.models import Order, WishList
 from product.models import ProductItem
+
+from order.models import Order, WishList
 
 
 def basket(request):
+    basket = None
+    if request.user.is_authenticated:
+        basket = ProductItem.objects.filter(user=request.user, status=0)
     context = {
-        'items': ProductItem.objects.filter(user=request.user, status=0)
+        'items': basket
     }
     return render(request, 'order/basket.html', context)
 
@@ -18,7 +22,9 @@ def checkout(request):
 
 
 def wishlist(request):
-    wishlist = WishList.objects.filter(user=request.user).first()
+    wishlist = None
+    if request.user.is_authenticated:
+        wishlist = WishList.objects.filter(user=request.user).first()
     context = {
         'wishlist': wishlist
     }
