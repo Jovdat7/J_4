@@ -1,11 +1,10 @@
 from typing import Any
-from urllib import request
+
 from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect
-from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404, redirect, render
-from itertools import chain
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from django.views import generic
 
 from .forms import CommentForm
@@ -20,36 +19,35 @@ class ProductListView(generic.ListView):
 
     def get_queryset(self) -> QuerySet[Any]:
         qs = super().get_queryset()
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa', self.request.GET)
+        print('heyooo============', self.request.GET)
         if 'filter' in self.request.GET:
             our_filter = self.request.GET['filter']
             if our_filter == 'latest':
                 qs = qs.order_by('-created_at')
-            elif our_filter == "trend":
-                qs = qs.order_by("-adding_to_basket_count")
+            elif our_filter == 'trandy':
+                qs = qs.order_by('-adding_to_basket_count')
             elif our_filter == 'increased_price':
                 qs = qs.order_by('price')
             elif our_filter == 'decreased_price':
                 qs = qs.order_by('-price')
-        if 'price' in self.request.GET:
-            price = self.request.GET.getlist('price')
-            if 'all' not in price:
-                res = []
-                for item in price:
-                    start, stop = map(int, item.split('-'))
-                    new = qs.filter(price__range=[start, stop])
-                    res.append(new)
-                    print('qsaaaaaaaaaaaaaaaaaa', qs)
-            qs = list(chain(*res)) # type: ignore
-        return qs # type: ignore
+        if 'start_price' in self.request.GET and 'end_price' in self.request.GET:
+            start_price = int(self.request.GET.get('start_price')) # type: ignore
+            end_price = int(self.request.GET.get('end_price')) # type: ignore # type: ignore
+            qs = qs.filter(price__range=[start_price, end_price])
+        return qs
     
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        if 'start_price' in self.request.GET and 'end_price' in self.request.GET:
+            start_price = int(self.request.GET.get('start_price')) # type: ignore
+            end_price = int(self.request.GET.get('end_price')) # type: ignore
+            context['start_price'] = start_price
+            context['end_price'] = end_price
         if 'filter' in self.request.GET:
             our_filter = self.request.GET['filter']
             if our_filter == 'latest':
                 context['our_filter'] = _('Latest')
-            elif our_filter == 'trend':
+            elif our_filter == 'trandy':
                 context['our_filter'] = _('Popularity')
             elif our_filter == 'increased_price':
                 context['our_filter'] = _('Increased price')
@@ -58,8 +56,7 @@ class ProductListView(generic.ListView):
         else:
             context['our_filter'] = _('Sort by')
         return context
-    
-    
+
 
 def products_by_category(request, category_slug):
     category = get_object_or_404(Category, slug=category_slug)

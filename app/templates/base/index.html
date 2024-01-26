@@ -27,6 +27,13 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <style>
+        .range-slider {
+            position: relative;
+            width: 100%;
+        }
+        
+    </style>
     {% block css %}
     {% endblock %}
 </head>
@@ -254,8 +261,8 @@
         <div class="row border-top border-light mx-xl-5 py-4">
             <div class="col-md-6 px-xl-0">
                 <p class="mb-md-0 text-center text-md-left text-dark">
-                    &copy; <a class="text-dark font-weight-semi-bold" href="#">J_0</a>. All Rights Reserved. Designed
-                    by J_0
+                    &copy; <a class="text-dark font-weight-semi-bold" href="#">J-0</a>. All Rights Reserved. Designed
+                    by J-0
                 </p>
             </div>
         </div>
@@ -281,8 +288,8 @@
     <script src="{% static 'js/main.js' %}"></script>
     <script>
         let csrftoken_ = "{{ csrf_token }}"
-        let add_to_wish_list_url = "{% url 'add-to-wish-list'  %}"
-        let remove_from_wish_list_url = "{% url 'remove-to-wish-list'  %}"
+        let add_to_wish_list_url = "{% url 'add-to-wish-list' %}"
+        let remove_from_wish_list_url = "{% url 'remove-to-wish-list' %}"
     </script>
     <script src="{% static 'apps/order/wishlist.js' %}"></script>
     {% block js %}
